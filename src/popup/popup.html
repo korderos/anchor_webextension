@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Save to Anchor</title>
+    <link rel="stylesheet" href="../ui/base.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <img class="logo" src="../../icons/icon-32.png" alt="" width="20" height="20" />
+      <div class="brand">
+        <strong>Save to Anchor</strong>
+        <span id="server-host" class="host"></span>
+      </div>
+      <button id="open-anchor" class="btn btn-ghost icon-btn" title="Open Anchor" aria-label="Open Anchor">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>
+      </button>
+      <button id="open-settings" class="btn btn-ghost icon-btn" title="Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </header>
+
+    <!-- Not connected yet -->
+    <section id="view-setup" class="view setup" hidden>
+      <div class="setup-art" aria-hidden="true">
+        <img src="../../icons/icon-128.png" alt="" width="56" height="56" />
+      </div>
+      <h1>Connect to your Anchor</h1>
+      <p>Add your server URL and an API token from <b>Anchor → Settings → API token</b> to start saving pages.</p>
+      <button id="setup-btn" class="btn btn-primary">Open settings</button>
+    </section>
+
+    <!-- Main form -->
+    <form id="view-form" class="view" hidden novalidate>
+      <div id="note-card" class="note-card">
+        <input id="title" class="title-input" type="text" placeholder="Title" autocomplete="off" spellcheck="true" />
+        <div class="source">
+          <img id="favicon" class="favicon" alt="" width="14" height="14" hidden />
+          <span id="source-url" class="source-url"></span>
+        </div>
+        <textarea id="comment" class="comment" rows="2" placeholder="Add a note…"></textarea>
+      </div>
+
+      <div id="duplicate" class="alert alert-info" hidden>
+        <span>You've saved this page before.</span>
+        <a id="duplicate-link" href="#" target="_blank" rel="noopener">Open note</a>
+      </div>
+
+      <fieldset class="group">
+        <legend>Capture</legend>
+        <div class="segmented" role="radiogroup" aria-label="What to save">
+          <label><input type="radio" name="mode" value="link" /><span>Link</span></label>
+          <label><input type="radio" name="mode" value="selection" /><span>Selection</span></label>
+          <label><input type="radio" name="mode" value="full" /><span>Full page</span></label>
+        </div>
+        <p id="mode-hint" class="hint"></p>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Tags</legend>
+        <div id="tags" class="tags" aria-live="polite"></div>
+        <div class="tag-add">
+          <input id="tag-input" class="field tag-input" type="text" placeholder="Find or create a tag…" autocomplete="off" />
+        </div>
+      </fieldset>
+
+      <fieldset class="group row">
+        <div class="colors" id="colors" role="radiogroup" aria-label="Note color"></div>
+        <label class="pin" title="Pin note">
+          <input id="pin" type="checkbox" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
+          <span>Pin</span>
+        </label>
+      </fieldset>
+
+      <div id="error" class="alert alert-error" role="alert" hidden></div>
+
+      <footer class="actions">
+        <span class="shortcut"><kbd>Ctrl</kbd> <kbd>Enter</kbd></span>
+        <button id="save" type="submit" class="btn btn-primary save-btn">
+          <span class="spinner" hidden></span>
+          <span class="label">Save note</span>
+        </button>
+      </footer>
+    </form>
+
+    <!-- Saved -->
+    <section id="view-done" class="view done" hidden>
+      <div class="check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h1>Saved to Anchor</h1>
+      <p id="done-title" class="done-title"></p>
+      <div class="done-actions">
+        <button id="done-close" class="btn">Close</button>
+        <a id="done-open" class="btn btn-primary" href="#" target="_blank" rel="noopener">Open note</a>
+      </div>
+    </section>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

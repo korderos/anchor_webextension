@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Save to Anchor · Settings</title>
+    <link rel="stylesheet" href="../ui/base.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <img src="../../icons/icon-128.png" alt="" width="44" height="44" />
+        <div>
+          <h1>Save to Anchor</h1>
+          <p>Send pages, selections and links from your browser to your self-hosted Anchor notes.</p>
+        </div>
+      </header>
+
+      <form id="connection" class="card" novalidate>
+        <h2>Connection</h2>
+
+        <label class="label" for="server-url">Server URL</label>
+        <input id="server-url" class="field" type="url" placeholder="https://anchor.example.com" autocomplete="url" required />
+        <p class="help">The address you open Anchor at in your browser.</p>
+
+        <label class="label" for="api-token">API token</label>
+        <div class="token-row">
+          <input id="api-token" class="field mono" type="password" placeholder="Paste your API token" autocomplete="off" spellcheck="false" required />
+          <button id="toggle-token" type="button" class="btn">Show</button>
+        </div>
+        <p class="help">
+          In Anchor, open <b>Settings → API token</b> and click <b>Generate</b>, then paste it here.
+          <a id="open-anchor-settings" href="#" target="_blank" rel="noopener">Open Anchor settings ↗</a>
+        </p>
+
+        <div id="status" class="alert" role="status" hidden></div>
+
+        <div class="actions">
+          <button id="save-connection" type="submit" class="btn btn-primary">
+            <span class="spinner" hidden></span><span class="label-text">Save &amp; test connection</span>
+          </button>
+          <button id="disconnect" type="button" class="btn btn-ghost">Disconnect</button>
+        </div>
+      </form>
+
+      <section class="card">
+        <h2>Saving</h2>
+
+        <div class="setting">
+          <div>
+            <div class="setting-title">Popup opens with</div>
+            <div class="help">Default capture mode in the toolbar popup. A text selection is always preselected when present.</div>
+          </div>
+          <select id="popup-mode" class="field select">
+            <option value="link">Link</option>
+            <option value="full">Full page</option>
+          </select>
+        </div>
+
+        <div class="setting">
+          <div>
+            <div class="setting-title">Quick save shortcut saves</div>
+            <div class="help">What <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> saves without opening the popup.</div>
+          </div>
+          <select id="quick-mode" class="field select">
+            <option value="link">Link</option>
+            <option value="full">Full page</option>
+          </select>
+        </div>
+
+        <label class="setting toggle">
+          <div>
+            <div class="setting-title">Remember last used tags</div>
+            <div class="help">Preselect the tags from your previous save. Quick saves and context-menu saves use them too.</div>
+          </div>
+          <input id="remember-tags" type="checkbox" />
+        </label>
+
+        <label class="setting toggle">
+          <div>
+            <div class="setting-title">Show a notification after quick saves</div>
+            <div class="help">For context-menu and shortcut saves. Click it to open the note.</div>
+          </div>
+          <input id="notify" type="checkbox" />
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Ways to save</h2>
+        <ul class="ways">
+          <li><b>Toolbar button</b> or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd>: edit the title, add a comment, pick tags, color and pin.</li>
+          <li><b>Right-click a page</b>: "Save page to Anchor" or "Save page with full text to Anchor".</li>
+          <li><b>Right-click selected text</b>: "Save selection to Anchor" saves it as a quote with the source link.</li>
+          <li><b>Right-click a link</b>: "Save link to Anchor".</li>
+          <li><b><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></b>: quick save the current page.</li>
+        </ul>
+        <p class="help">You can change keyboard shortcuts in your browser's extension shortcut settings
+          (<span class="mono">chrome://extensions/shortcuts</span> or Firefox Add-ons → ⚙ → Manage Extension Shortcuts).</p>
+      </section>
+
+      <p id="saved-toast" class="toast" hidden>Saved</p>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>
